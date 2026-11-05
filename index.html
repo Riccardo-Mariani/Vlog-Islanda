@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vlog Islanda</title>
+<meta name="description" content="Un video al giorno, tutto quello che ho fatto.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e1013; --panel:#171a1f; --panel2:#1f232a; --line:#2a2f37;
+    --text:#eef1f4; --muted:#98a2ad; --accent:#7fd1c7; --accent2:#9b8cff; --radius:18px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  body{background:
+    radial-gradient(900px 420px at 15% -120px, rgba(127,209,199,.18), transparent 70%),
+    radial-gradient(900px 420px at 85% -160px, rgba(155,140,255,.16), transparent 70%), var(--bg);min-height:100vh}
+  .wrap{max-width:1040px;margin:0 auto;padding:56px 20px 80px}
+  header{text-align:center;margin-bottom:44px}
+  .eyebrow{letter-spacing:.24em;text-transform:uppercase;font-size:12px;color:var(--accent);font-weight:600}
+  h1{font-family:Fraunces,serif;font-weight:700;font-size:clamp(38px,7vw,64px);margin:12px 0 8px;line-height:1.02}
+  .subtitle{color:var(--muted);font-size:17px;margin:0}
+  .stats{margin-top:18px;color:var(--muted);font-size:13px}
+  .stats b{color:var(--text)}
+
+  nav.days{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 14px;margin:0 0 30px;scrollbar-width:thin;position:sticky;top:0;z-index:5;background:linear-gradient(var(--bg) 75%,transparent)}
+  nav.days a{flex:0 0 auto;text-decoration:none;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:13px;background:var(--panel)}
+  nav.days a:hover{color:var(--text);border-color:var(--accent)}
+
+  .day{margin-bottom:52px;scroll-margin-top:70px}
+  .day-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  .day-num{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#0e1013;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:999px;padding:4px 10px}
+  .day-head h2{font-family:Fraunces,serif;font-size:26px;margin:0;text-transform:capitalize}
+  .day-head .count{color:var(--muted);font-size:13px}
+  .videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+  .vcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column}
+  .player{position:relative;aspect-ratio:16/9;background:#000;cursor:pointer}
+  .player.vertical{aspect-ratio:9/16;max-height:620px}
+  .player img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85;transition:opacity .2s}
+  .player:hover img{opacity:1}
+  .player .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+  .player .play span{width:68px;height:68px;border-radius:50%;background:rgba(14,16,19,.65);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;transition:transform .15s}
+  .player:hover .play span{transform:scale(1.08)}
+  .player .play span::after{content:"";border-left:20px solid #fff;border-top:12px solid transparent;border-bottom:12px solid transparent;margin-left:5px}
+  .player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .player .fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;background:linear-gradient(135deg,#1b2a2e,#221f33)}
+  .vbody{padding:14px 16px 16px}
+  .vtitle{font-weight:600;font-size:16px;margin:0 0 5px}
+  .vnote{color:var(--muted);font-size:14px;margin:0;line-height:1.5;white-space:pre-wrap}
+  .vlink{display:inline-block;margin-top:10px;font-size:12px;color:var(--muted)}
+  .vlink:hover{color:var(--accent)}
+  .empty{text-align:center;color:var(--muted);padding:70px 20px}
+  .empty .big{font-family:Fraunces,serif;font-size:26px;color:var(--text);margin-bottom:8px}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow" id="author">Diario video</div>
+    <h1 id="title">Vlog Islanda</h1>
+    <p class="subtitle" id="subtitle"></p>
+    <div class="stats" id="stats"></div>
+  </header>
+  <nav class="days" id="dayNav" hidden></nav>
+  <main id="feed"><div class="empty">Caricamento…</div></main>
+  <footer id="footer"></footer>
+</div>
+
+<script>
+(async () => {
+  const $ = id => document.getElementById(id);
+  const feed = $("feed");
+  let data;
+  try {
+    const r = await fetch("videos.json?v=" + Date.now(), { cache: "no-store" });
+    data = await r.json();
+  } catch (e) {
+    feed.innerHTML = '<div class="empty"><div class="big">Ops</div>Non riesco a caricare l\'elenco dei video.</div>';
+    return;
+  }
+
+  const site = data.site || {};
+  if (site.title) { $("title").textContent = site.title; document.title = site.title; }
+  $("subtitle").textContent = site.subtitle || "";
+  if (site.author) $("author").textContent = site.author;
+  $("footer").textContent = "© " + new Date().getFullYear() + (site.author ? " " + site.author : "");
+
+  // Accetta sia un ID di Drive sia un link completo di Drive
+  const driveId = v => {
+    const s = String(v.drive || v.id || "");
+    const m = s.match(/\/d\/([\w-]{10,})/) || s.match(/[?&]id=([\w-]{10,})/);
+    return m ? m[1] : s.trim();
+  };
+
+  const videos = (data.videos || []).filter(v => driveId(v));
+  const groups = new Map();
+  videos.forEach(v => { const k = v.day || "senza-data"; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(v); });
+  const daysAsc = [...groups.keys()].sort();
+  const dayIndex = new Map(daysAsc.map((d, i) => [d, i + 1]));
+  const days = [...daysAsc].reverse();
+
+  $("stats").innerHTML = videos.length ? `<b>${videos.length}</b> video · <b>${days.length}</b> ${days.length === 1 ? "giorno" : "giorni"}` : "";
+
+  if (!videos.length) {
+    feed.innerHTML = '<div class="empty"><div class="big">Ancora nessun video</div>Il primo arriva presto. Torna a trovarmi!</div>';
+    return;
+  }
+
+  const fmtDay = day => {
+    const d = new Date(day + "T12:00:00");
+    return isNaN(d) ? day : d.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" });
+  };
+
+  const nav = $("dayNav");
+  feed.innerHTML = "";
+  for (const day of days) {
+    const n = dayIndex.get(day);
+    const a = document.createElement("a"); a.href = "#giorno-" + n; a.textContent = "Giorno " + n; nav.append(a);
+
+    const sec = document.createElement("section"); sec.className = "day"; sec.id = "giorno-" + n;
+    const head = document.createElement("div"); head.className = "day-head";
+    const num = document.createElement("span"); num.className = "day-num"; num.textContent = "Giorno " + n;
+    const h = document.createElement("h2"); h.textContent = fmtDay(day);
+    const items = groups.get(day);
+    const c = document.createElement("span"); c.className = "count"; c.textContent = items.length === 1 ? "1 video" : items.length + " video";
+    head.append(num, h, c); sec.append(head);
+
+    const grid = document.createElement("div"); grid.className = "videos";
+    items.forEach(v => grid.append(card(v)));
+    sec.append(grid); feed.append(sec);
+  }
+  nav.hidden = days.length < 2;
+
+  function card(v) {
+    const id = driveId(v);
+    const el = document.createElement("article"); el.className = "vcard";
+    const p = document.createElement("div"); p.className = "player" + (v.vertical ? " vertical" : "");
+    p.setAttribute("role", "button"); p.setAttribute("aria-label", "Guarda " + (v.title || "video"));
+    const img = document.createElement("img"); img.loading = "lazy"; img.alt = "";
+    img.src = "https://drive.google.com/thumbnail?id=" + encodeURIComponent(id) + "&sz=w1200";
+    img.onerror = () => { const f = document.createElement("div"); f.className = "fallback"; img.replaceWith(f); };
+    const play = document.createElement("div"); play.className = "play"; play.innerHTML = "<span></span>";
+    p.append(img, play);
+    p.addEventListener("click", () => {
+      if (p.querySelector("iframe")) return;
+      const f = document.createElement("iframe");
+      f.src = "https://drive.google.com/file/d/" + encodeURIComponent(id) + "/preview";
+      f.allow = "autoplay; fullscreen"; f.allowFullscreen = true;
+      p.innerHTML = ""; p.append(f); p.style.cursor = "default";
+    });
+    el.append(p);
+    const b = document.createElement("div"); b.className = "vbody";
+    if (v.title) { const t = document.createElement("p"); t.className = "vtitle"; t.textContent = v.title; b.append(t); }
+    if (v.note) { const n = document.createElement("p"); n.className = "vnote"; n.textContent = v.note; b.append(n); }
+    const l = document.createElement("a"); l.className = "vlink"; l.target = "_blank"; l.rel = "noopener";
+    l.href = "https://drive.google.com/file/d/" + encodeURIComponent(id) + "/view"; l.textContent = "Apri su Drive ↗";
+    b.append(l); el.append(b);
+    return el;
+  }
+})();
+</script>
+</body>
+</html>
