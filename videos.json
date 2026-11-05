@@ -8,9 +8,94 @@
   "videos": [
     {
       "day": "2026-11-05",
-      "title": "Verso la fermata del bus",
-      "note": "Timelapse di noi che andiamo alla fermata del bus.",
-      "drive": "1GUrWvx8xdZvSPDVGeBMdu3ozlafD9MFe"
+      "title": "Si parte: spesa al Bónus",
+      "note": "",
+      "drive": "1nxsZ70nOX2kZe1_bDNdrS35zwKeGi9Oz",
+      "vertical": true
+    },
+    {
+      "day": "2026-11-05",
+      "title": "Il muro del pane",
+      "note": "",
+      "drive": "1Okh0rfQ1TDTcygnqtVLuRO_kYaRh9SjW",
+      "vertical": true
+    },
+    {
+      "day": "2026-11-05",
+      "title": "Tra le corsie",
+      "note": "",
+      "drive": "1_UiB5EU2AC5y47lXlw2PrNxnkFbgDVVr",
+      "vertical": true
+    },
+    {
+      "day": "2026-11-05",
+      "title": "Il reparto frutta",
+      "note": "",
+      "drive": "1bkWMiwXLlOCotIkBUsQR7JRzit4UfnWf",
+      "vertical": true
+    },
+    {
+      "day": "2026-11-05",
+      "title": "Scegliamo la verdura",
+      "note": "",
+      "drive": "1gDUOeOPC1vRBofcx7B-Uhjb8niix0-1H",
+      "vertical": true
+    },
+    {
+      "day": "2026-11-05",
+      "title": "Il banco frigo",
+      "note": "",
+      "drive": "1YwfwkorJ9gfdheq4pvC1ITqQyJkKKKqJ",
+      "vertical": true
+    },
+    {
+      "day": "2026-11-05",
+      "title": "Caccia al pollo",
+      "note": "",
+      "drive": "1fq-5hAQiUj2MeDZLOi_PXxPiHjBpJWus",
+      "vertical": true
+    },
+    {
+      "day": "2026-11-05",
+      "title": "Controllo del latte",
+      "note": "",
+      "drive": "1lgY89wgxdhjrT-Wy3PlGJSYD793gi8S5",
+      "vertical": true
+    },
+    {
+      "day": "2026-11-05",
+      "title": "Alla cassa automatica",
+      "note": "",
+      "drive": "14Bnf1vIYCuk7hHUO0iuLu1Y7866sJKL1",
+      "vertical": true
+    },
+    {
+      "day": "2026-11-05",
+      "title": "Si paga",
+      "note": "",
+      "drive": "1ItcttfEDxMcBBEniYZa6hWAUhkKzfjgF",
+      "vertical": true
+    },
+    {
+      "day": "2026-11-05",
+      "title": "Fuori con le buste",
+      "note": "",
+      "drive": "1cBQjovjFmvocLLYWdiKyRGjwaxB1Wvex",
+      "vertical": true
+    },
+    {
+      "day": "2026-11-05",
+      "title": "Verso casa sotto la pioggia",
+      "note": "",
+      "drive": "1oITIusaUcWawXAJlchPBZmsI9PvOWrRI",
+      "vertical": false
+    },
+    {
+      "day": "2026-11-05",
+      "title": "Il ritorno a piedi",
+      "note": "",
+      "drive": "13vHItJnMT056598X05Q5BJHA7N5PTtFj",
+      "vertical": true
     }
   ]
 }
