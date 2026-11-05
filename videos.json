@@ -4,5 +4,12 @@
     "subtitle": "Un video al giorno, tutto quello che ho fatto.",
     "author": "Ric Malone"
   },
-  "videos": []
+  "videos": [
+    {
+      "day": "2026-11-05",
+      "title": "",
+      "note": "",
+      "drive": "1GUrWvx8xdZvSPDVGeBMdu3ozlafD9MFe"
+    }
+  ]
 }
