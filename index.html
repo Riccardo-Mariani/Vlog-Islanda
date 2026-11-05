@@ -19,6 +19,7 @@
     radial-gradient(900px 420px at 85% -160px, rgba(155,140,255,.16), transparent 70%), var(--bg);min-height:100vh}
   .wrap{max-width:1040px;margin:0 auto;padding:56px 20px 80px}
   header{text-align:center;margin-bottom:44px}
+  h1{margin-top:0}
   .eyebrow{letter-spacing:.24em;text-transform:uppercase;font-size:12px;color:var(--accent);font-weight:600}
   h1{font-family:Fraunces,serif;font-weight:700;font-size:clamp(38px,7vw,64px);margin:12px 0 8px;line-height:1.02}
   .subtitle{color:var(--muted);font-size:17px;margin:0}
@@ -59,7 +60,6 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="eyebrow" id="author">Diario video</div>
     <h1 id="title">Vlog Islanda</h1>
     <p class="subtitle" id="subtitle"></p>
     <div class="stats" id="stats"></div>
@@ -85,7 +85,6 @@
   const site = data.site || {};
   if (site.title) { $("title").textContent = site.title; document.title = site.title; }
   $("subtitle").textContent = site.subtitle || "";
-  if (site.author) $("author").textContent = site.author;
   $("footer").textContent = "© " + new Date().getFullYear() + (site.author ? " " + site.author : "");
 
   // Accetta sia un ID di Drive sia un link completo di Drive
@@ -99,7 +98,13 @@
   const groups = new Map();
   videos.forEach(v => { const k = v.day || "senza-data"; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(v); });
   const daysAsc = [...groups.keys()].sort();
-  const dayIndex = new Map(daysAsc.map((d, i) => [d, i + 1]));
+  // Numero del giorno contato dalla data di inizio del viaggio (site.startDate)
+  const start = site.startDate ? new Date(site.startDate + "T12:00:00") : null;
+  const dayIndex = new Map(daysAsc.map((d, i) => {
+    const dt = new Date(d + "T12:00:00");
+    const n = start && !isNaN(start) && !isNaN(dt) ? Math.round((dt - start) / 86400000) + 1 : i + 1;
+    return [d, n];
+  }));
   const days = [...daysAsc].reverse();
 
   $("stats").innerHTML = videos.length ? `<b>${videos.length}</b> video · <b>${days.length}</b> ${days.length === 1 ? "giorno" : "giorni"}` : "";

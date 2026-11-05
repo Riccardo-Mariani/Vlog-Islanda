@@ -2,7 +2,8 @@
   "site": {
     "title": "Vlog Islanda",
     "subtitle": "Un video al giorno, tutto quello che ho fatto.",
-    "author": "Ric Malone"
+    "author": "Ric Malone",
+    "startDate": "2026-11-04"
   },
   "videos": [
     {
